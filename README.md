@@ -65,6 +65,3 @@ This setup follows the classic suckless workflow:
 -   rebuild scripts for development
 -   everything portable in .dotfiles
 
-📜 License
-
-M
