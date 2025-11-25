@@ -1,19 +1,21 @@
 # autostart applications
 feh --bg-fill ~/dotfiles/wallpapers/debian.png &
+
 ~/.config/dwm/autostart.sh &
+
 slstatus &
-# tag 1 terminal (rule sends it to tag 1)
-# terminal st, firefox-esr 
-# tag 2 firefox (rule sends it to tag 2)
-st &
-# tag 3: three terminals
-st -n t3a &
+
+### --- AUTO-STARTED TERMINALS --- ###
+
+# Tag 1 terminal
+alacritty --class Alacritty,t1 &
+
+# Tag 3 — three terminals
+alacritty --class Alacritty,t3a &
 sleep 0.8
-st -n t3b &
+alacritty --class Alacritty,t3b &
 sleep 0.8
-st -n t3c &
-# tag 4
-# Choice of application 
+alacritty --class Alacritty,t3c &
 
 # Autoconnect Bluetooth speaker, change if you 
 # want Bluetooth automatically connected!

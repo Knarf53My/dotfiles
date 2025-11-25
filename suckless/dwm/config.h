@@ -36,14 +36,16 @@ static const char *colors[][3] = {
 static const char *tags[] = { "1", "2", "3", "4", "5", "6" };
 
 static const Rule rules[] = {
-	/* class           instance    title    tags mask     isfloating   monitor */
-	{ "st-256color",   "t1",       NULL,    1 << 0,       0,           -1 },  /* tag 1 terminal */
-	{ "st-256color",   "t3a",      NULL,    1 << 2,       0,           -1 },  /* tag 3 terminal 1 */
-	{ "st-256color",   "t3b",      NULL,    1 << 2,       0,           -1 },  /* tag 3 terminal 2 */
-	{ "st-256color",   "t3c",      NULL,    1 << 2,       0,           -1 },  /* tag 3 terminal 3 */
-	{ "firefox-esr",   NULL,       NULL,    1 << 1,       0,           -1 },  /* tag 2 firefox */
-	{ "Google-chrome", NULL,       NULL,    1 << 3,       0,           -1 },  /* tag 4 Google-chrome */
-	{ "st-256color",   NULL,       NULL,    0,            0,           -1 },  /* any other st  */
+    /* class        instance  title   tags mask  isfloating  monitor */
+    { "Alacritty",  "t1",     NULL,   1 << 0,    0,          -1 }, /* tag 1 terminal */
+    { "Alacritty",  "t3a",    NULL,   1 << 2,    0,          -1 }, /* tag 3 terminal 1 */
+    { "Alacritty",  "t3b",    NULL,   1 << 2,    0,          -1 }, /* tag 3 terminal 2 */
+    { "Alacritty",  "t3c",    NULL,   1 << 2,    0,          -1 }, /* tag 3 terminal 3 */
+
+    { "firefox-esr",   NULL,  NULL,   1 << 1,    0,          -1 }, /* tag 2 firefox */
+    { "Google-chrome", NULL,  NULL,   1 << 3,    0,          -1 }, /* tag 4 chrome */
+
+    { "Alacritty",  NULL,     NULL,   0,         0,          -1 }, /* any other alacritty */
 };
 
 /* layout(s) */
@@ -80,7 +82,7 @@ static const char *dmenucmd[] = {
 	NULL
 };
 
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "alacritty", NULL };
 
 /* volume commands */
 static const char *volupcmd[]   = { "pamixer", "--increase", "2", NULL };

@@ -104,6 +104,7 @@ sudo apt install -y \
     maim xclip feh \
     pkg-config
 
+sudo apt install -y alacritty
 sudo apt install -y xorg xinit x11-xserver-utils
 
 echo "==> Installing terminfo support..."
@@ -130,27 +131,7 @@ build_suckless() {
         echo "!! $name: directory $path does not exist, skipping"
     fi
 }
-
-#Ensure st.info exists for st build (minimal version!)
-ST_INFO="$SUCKLESS/st/st.info"
-if [ ! -f "$ST_INFO" ]; then
-        echo "==> Creating minimal st.info for terminfo..."
-        cat > "$ST_INFO" << "EOF"
-st|simpleterm,
-        am,
-        bel=^G,
-        clear=\E[H\E[2J,
-        cub1=\b,
-        cud1=\n,
-        cuf1=\E[C,
-        cuu1=\E[A,
-EOF
-fi
-
-sudo tic -sx "$ST_INFO"
-
 build_suckless "dwm"      "$SUCKLESS/dwm"
-build_suckless "st"       "$SUCKLESS/st"
 build_suckless "slstatus" "$SUCKLESS/slstatus"
 
 echo "==> Bootstrap complete!"
