@@ -102,10 +102,9 @@ sudo apt install -y \
     libx11-dev libxft-dev libxinerama-dev \
     libfreetype6-dev libfontconfig1-dev \
     maim xclip feh \
-    ranger vim git htop bmon\
     pkg-config
 
-sudo apt install -y x11-xserver-utils
+sudo apt install -y xorg xinit x11-xserver-utils
 
 echo "==> Installing terminfo support..."
 sudo apt install -y ncurses-base ncurses-term
