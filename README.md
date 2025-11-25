@@ -9,7 +9,7 @@ and a complete bootstrap system.
 
 Clone this repository into ~/.dotfiles:
 
-    git clone https://github.com/Knarf53My/dwm-setup.git ~/.dotfiles
+    git clone https://github.com/Knarf53My/dotfiles.git ~/.dotfiles
 
 Enter the folder:
 
