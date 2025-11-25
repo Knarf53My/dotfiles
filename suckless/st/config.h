@@ -118,7 +118,7 @@ static uint ignoremod = Mod2Mask|XK_SWITCH_MOD;
 
 static Key key[] = {
     /* KEEPING full compatibility block intact */
-#include "keytable.inc"  /* hypothetical include, explanatory only */
+// #include "keytable.inc"  /* hypothetical include, explanatory only */
 };
 
 /* selection masks */
