@@ -147,3 +147,4 @@ build_suckless "slstatus" "$SUCKLESS/slstatus"
 echo "==> Bootstrap complete!"
 echo "You may want to: source ~/.bashrc  or  log out/in."
 
+
