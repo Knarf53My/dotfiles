@@ -95,6 +95,9 @@ sudo apt install -y \
     ranger vim git \
     pkg-config
 
+echo "==> Installing terminfo support..."
+sudo apt install -y ncurses-base ncurses-term
+
 # -----------------------------------------------------------
 # 5. Initial suckless build (if sources exist)
 # -----------------------------------------------------------
@@ -116,6 +119,24 @@ build_suckless() {
         echo "!! $name: directory $path does not exist, skipping"
     fi
 }
+
+#Ensure st.info exists for st build (minimal version!)
+ST_INFO="$SUCKLESS/st/st.info"
+if [ ! -f "$ST_INFO" ]; then
+        echo "==> Creating minimal st.info for terminfo..."
+        cat > "$ST_INFO" << "EOF"
+st|simpleterm,
+        am,
+        bel=^G,
+        clear=\E[H\E[2J,
+        cub1=\b,
+        cud1=\n,
+        cuf1=\E[C,
+        cuu1=\E[A,
+EOF
+fi
+
+sudo tic -sx "$ST_INFO"
 
 build_suckless "dwm"      "$SUCKLESS/dwm"
 build_suckless "st"       "$SUCKLESS/st"
