@@ -95,6 +95,8 @@ sudo apt install -y \
     ranger vim git htop bmon\
     pkg-config
 
+sudo apt install -y x11-xserver-utils
+
 echo "==> Installing terminfo support..."
 sudo apt install -y ncurses-base ncurses-term
 
