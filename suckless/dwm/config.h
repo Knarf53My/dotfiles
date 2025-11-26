@@ -29,24 +29,16 @@ static const char col_accent_alt[]= COL_ACCENT_ALT;
 static const char *colors[][3] = {
 	/* fg          bg          border */
 	[SchemeNorm] = { col_fg_dim, col_bg,    col_border },
-	[SchemeSel]  = { col_fg,     col_accent, col_accent },
+	[SchemeSel]  = { col_fg,     col_bg_alt,col_accent },
 };
 
 /* tagging: 6 tags, numeric for now */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6" };
 
 static const Rule rules[] = {
-    /* class        instance  title   tags mask  isfloating  monitor */
-    /* Tag 2: Primary terminal (1 << 1) */
-    { "Alacritty",  "t2",     NULL,   1 << 1,    0,          -1 }, 
-    
-    /* Tag 6: Monitoring Terminals (1 << 5) */
-    { "Alacritty",  "t6a",    NULL,   1 << 5,    0,          -1 }, 
-    { "Alacritty",  "t6b",    NULL,   1 << 5,    0,          -1 }, 
-    { "Alacritty",  "t6c",    NULL,   1 << 5,    0,          -1 }, 
-
-    /* Generic rules */
-    { "Alacritty",  NULL,     NULL,   0,         0,          -1 }, /* any other alacritty */
+	/* class      instance    title       tags mask     isfloating   monitor */
+	/* All apps open on the currently active tag (tags mask = 0) */
+	{ NULL,       NULL,       NULL,       0,            0,           -1 },
 };
 
 /* layout(s) */
@@ -54,7 +46,6 @@ static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] 
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
-static const int refreshrate = 120;  /* refresh rate (per second) for client move/resize */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
@@ -64,7 +55,7 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod4Mask   /* Super/Windows key */
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -75,34 +66,18 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = {
-	"dmenu_run", "-m", dmenumon, "-fn", dmenufont,
-	"-nb", col_bg,    "-nf", col_fg,
-	"-sb", col_bg,    "-sf", col_fg,
-	NULL
-};
-
+static char dmenumon[2] = "0"; /* component of dmenucmd, for screen */
+static const char *roficmd[] = { "rofi", "-show", "drun", "-config", "$HOME/.config/rofi/config.rasi", NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
-static const char *browsercmd[] = { "firefox-esr", NULL }; // Updated to firefox-esr
+static const char *browsercmd[] = { "firefox-esr", NULL };
 
-/* volume commands */
-static const char *volupcmd[]   = { "pamixer", "--increase", "2", NULL };
-static const char *voldowncmd[] = { "pamixer", "--decrease", "2", NULL };
-static const char *volmutecmd[] = { "pamixer", "--toggle-mute", NULL };
-
-/* brightness commands (kept for laptop use) */
-static const char *brightupcmd[]   = { "brightnessctl", "set", "+10%", NULL };
-static const char *brightdowncmd[] = { "brightnessctl", "set", "10%-", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-	
-	/* Keybindings for dedicated application launchers */
-	{ MODKEY,                       XK_w,      spawn,          {.v = browsercmd } }, /* Super + w: Launch Web Browser (firefox-esr) */
-    
+	{ MODKEY,                       XK_space,  spawn,          {.v = roficmd } }, // Rofi Launcher on Mod+Space
+	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } }, // Launch Terminal
+	{ MODKEY,                       XK_p,      zoom,           {0} },             // Zoom (Master Client) on Mod+p
+	{ MODKEY,                       XK_w,      spawn,          {.v = browsercmd } }, // Launch Browser
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -110,45 +85,33 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+	{ MODKEY|ShiftMask,             XK_space,  setlayout,      {0} },
+	{ MODKEY,                       XK_s,      togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-
-	/* tags 1–6 only */
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
 	TAGKEYS(                        XK_4,                      3)
 	TAGKEYS(                        XK_5,                      4)
 	TAGKEYS(                        XK_6,                      5)
-
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 
-	/* volume (F10/F11/F12 for desktop keyboard) */
-	{ 0,                            XK_F10,   spawn,           {.v = volmutecmd } },
-	{ 0,                            XK_F11,   spawn,           {.v = voldowncmd } },
-	{ 0,                            XK_F12,   spawn,           {.v = volupcmd } },
+	/* Volume control */
+	{ 0, XF86XK_AudioMute,          spawn, SHCMD("amixer -q set Master toggle") },
+	{ 0, XF86XK_AudioRaiseVolume,   spawn, SHCMD("amixer -q set Master 5%+") },
+	{ 0, XF86XK_AudioLowerVolume,   spawn, SHCMD("amixer -q set Master 5%-") },
 
-	/* brightness (kept for laptop use) */
-	{ MODKEY,                       XK_F5,    spawn,           {.v = brightdowncmd } },
-	{ MODKEY,                       XK_F6,    spawn,           {.v = brightupcmd } },
-
-	/* Screenshots
-	 * - Print: full screen → screenshots dir
-	 * - Shift+Print: selection → screenshots dir
-	 * - Ctrl+Print: selection → clipboard
-	 */
+	/* Screenshot commands */
 	{ 0,                            XK_Print,  spawn, SHCMD("maim \"$HOME/dotfiles/screenshots/screenshot-$(date +%F_%T).png\"") },
 	{ ShiftMask,                    XK_Print,  spawn, SHCMD("maim -s \"$HOME/dotfiles/screenshots/selection-$(date +%F_%T).png\"") },
 	{ ControlMask,                  XK_Print,  spawn, SHCMD("maim -s | xclip -selection clipboard -t image/png") },

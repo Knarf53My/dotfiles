@@ -28,6 +28,7 @@ mkdir -p "$DOTFILES/scripts"
 mkdir -p "$DOTFILES/themes"
 mkdir -p "$DOTFILES/wallpapers"
 mkdir -p "$DOTFILES/screenshots" # Ensure screenshots dir exists for maim
+mkdir -p "$DOTFILES/configs/.config/xsessions" # NEW: Directory for the DWM session file
 
 # -----------------------------------------------------------
 # 2. Helper: safe symlink
@@ -111,8 +112,8 @@ if [ "$UPDATE_MODE" -eq 0 ]; then
     # 4a. Build essentials and X libs
     sudo apt install -y build-essential libx11-dev libxft-dev libxinerama-dev libfreetype6-dev libfontconfig1-dev pkg-config
     
-    # 4b. Utilities and applications (Firefox-esr included)
-    sudo apt install -y maim xclip feh alacritty firefox-esr
+    # 4b. Utilities and applications (Firefox-esr, Rofi, and LightDM included)
+    sudo apt install -y maim xclip feh alacritty firefox-esr rofi lightdm lightdm-gtk-greeter
     
     # 4c. X system and terminfo
     sudo apt install -y xorg xinit x11-xserver-utils ncurses-base ncurses-term
@@ -139,12 +140,25 @@ build_suckless() {
         else
             echo "!! $name: directory exists ($path), but no Makefile found. Did you clone the source code into this directory?"
         fi
-    else
-        echo "!! $name: source directory $path does not exist, skipping build."
     }
 }
 build_suckless "dwm"      "$SUCKLESS/dwm"
 build_suckless "slstatus" "$SUCKLESS/slstatus"
+
+
+# -----------------------------------------------------------
+# 6. LightDM/Xsession Setup
+# -----------------------------------------------------------
+echo "==> Configuring LightDM session for DWM..."
+
+if [ "$UPDATE_MODE" -eq 0 ]; then
+    # Create the necessary directory before copying
+    sudo mkdir -p "/usr/share/xsessions"
+    
+    # Copy the DWM session file to the system directory (requires sudo)
+    sudo cp "$DOTFILES/configs/.config/xsessions/dwm.desktop" "/usr/share/xsessions/dwm.desktop"
+    echo "-> DWM session file copied to /usr/share/xsessions/dwm.desktop"
+fi
 
 echo "==> Bootstrap complete!"
 echo "You may want to: source ~/.bashrc  or  log out/in."
