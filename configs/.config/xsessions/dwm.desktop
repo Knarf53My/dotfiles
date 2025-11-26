@@ -1,6 +1,6 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=DWM
-Comment=Dynamic Window Manager (via .xinitrc)
-Exec=sh -c "exec $HOME/.xinitrc"
+Comment=Dynamic Window Manager (Dedicated Session Script)
+Exec=/home/frank/dotfiles/configs/.config/dwm/dwm-session.sh
 Type=Application
