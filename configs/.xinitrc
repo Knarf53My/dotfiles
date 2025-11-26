@@ -10,8 +10,10 @@ xrdb -merge $HOME/.Xresources
 # This usually runs things like nm-applet, polkit, compositor, etc.
 "$HOME/.config/dwm/autostart.sh" &
 
+sleep 1
+
 # Wallpaper (FEH): Using --bg-scale and robust path ($HOME)
-feh --bg-scale --no-xinerama "$HOME/dotfiles/wallpapers/debian.png" &
+feh --bg-scale --scale-down --no-xinerama "$HOME/dotfiles/wallpapers/73.png" &
 
 # Status Bar: slstatus
 slstatus &
