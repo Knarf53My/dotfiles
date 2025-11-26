@@ -6,15 +6,15 @@ xrdb -merge $HOME/.Xresources
 # 2. Start all background services (MUST use '&')
 # These processes run alongside DWM and keep the session active.
 
-# Wallpaper (FEH): Using --bg-scale and robust path ($HOME)
-feh --bg-scale "$HOME/dotfiles/wallpapers/debian.png" &
-
-# Status Bar: slstatus
-slstatus &
-
 # DWM Autostart Script: For other background apps
 # This usually runs things like nm-applet, polkit, compositor, etc.
 "$HOME/.config/dwm/autostart.sh" &
+
+# Wallpaper (FEH): Using --bg-scale and robust path ($HOME)
+feh --bg-scale --no-xinerama "$HOME/dotfiles/wallpapers/debian.png" &
+
+# Status Bar: slstatus
+slstatus &
 
 # Optional: Autoconnect Bluetooth speaker
 # (
