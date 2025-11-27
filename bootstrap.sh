@@ -77,32 +77,41 @@ build_suckless() {
 build_suckless "dwm"      "$SUCKLESS/dwm"
 build_suckless "slstatus" "$SUCKLESS/slstatus"
 
-
-# -----------------------------------------------------------
-# 5. LightDM/Xsession Setup (Final, Clean Deployment)
-# -----------------------------------------------------------
-echo "==> Configuring LightDM session for DWM..."
-
-if [ "$UPDATE_MODE" -eq 0 ]; then
-    # Create the necessary directory before copying
-    sudo mkdir -p "/usr/share/xsessions"
-    
-    # CRITICAL: Grant executable permission to the session script
-    chmod a+x "$DOTFILES/configs/.config/dwm/dwm-sessions.sh"
-    echo "Set executable permission on dwm-sessions.sh"
-    
-    # CRITICAL: Deploy the .desktop file with the /bin/bash wrapper fix
-    # Note: The dwm.desktop file must be correctly sourced from the repository.
-    sudo cp "$DOTFILES/configs/.config/xsessions/dwm.desktop" "/usr/share/xsessions/dwm.desktop"
-    echo "-> DWM session file copied to /usr/share/xsessions/dwm.desktop"
-fi
-
 # -----------------------------------------------------------
 # 6. Enable and Start LightDM Service (Guarantee)
 # -----------------------------------------------------------
 echo "==> Enabling and starting LightDM service..."
 sudo systemctl enable lightdm
-sudo systemctl start lightdm
+# We keep the start command here if it was run outside of X
 
+# -----------------------------------------------------------
+# 7. LightDM/Xsession Deployment (MUST run every time)
+# -----------------------------------------------------------
+echo "==> Deploying DWM session files and executable permissions..."
+
+# A. Create the necessary directory before copying
+sudo mkdir -p "/usr/share/xsessions"
+
+# B. CRITICAL: Grant executable permission to the session script
+if [ -f "$DWM_SESSION_SCRIPT" ]; then
+    chmod a+x "$DWM_SESSION_SCRIPT"
+    echo "Set executable permission on dwm-sessions.sh"
+else
+    echo "!! ERROR: DWM session script not found at $DWM_SESSION_SCRIPT"
+    exit 1
+fi
+
+# C. CRITICAL: Deploy the .desktop file to the system
+DWM_DESKTOP_SRC="$DOTFILES/configs/.config/xsessions/dwm.desktop"
+if [ -f "$DWM_DESKTOP_SRC" ]; then
+    sudo cp "$DWM_DESKTOP_SRC" "$XDG_SESSION_DIR/dwm.desktop"
+    echo "-> DWM session file copied to $XDG_SESSION_DIR/dwm.desktop"
+else
+    echo "!! ERROR: dwm.desktop source file not found. Cannot deploy session."
+    exit 1
+fi
+
+# D. Start LightDM service immediately after deployment (guarantee)
+sudo systemctl start lightdm
 
 echo "==> Bootstrap complete! Rebooting is recommended."
