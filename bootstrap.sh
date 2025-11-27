@@ -32,9 +32,6 @@ mkdir -p "$DOTFILES/wallpapers"
 mkdir -p "$DOTFILES/screenshots"
 mkdir -p "$DOTFILES/configs/.config/xsessions"
 
-# -----------------------------------------------------------
-# 2. Helper: safe symlink (omitted for brevity)
-# -----------------------------------------------------------
 
 # -----------------------------------------------------------
 # 3. Install essential packages (Debian-based)
@@ -76,6 +73,39 @@ build_suckless() {
 }
 build_suckless "dwm"      "$SUCKLESS/dwm"
 build_suckless "slstatus" "$SUCKLESS/slstatus"
+
+# -----------------------------------------------------------
+# 5. Configuration Symlinks
+# -----------------------------------------------------------
+echo "==> Creating essential configuration symlinks..."
+
+# Helper: safe symlink function
+safe_symlink() {
+    local src="$1"
+    local dest="$2"
+
+    if [ -e "$dest" ] && ! [ -L "$dest" ]; then
+        echo "--> Backing up existing $dest to ${dest}.bak"
+        mv "$dest" "${dest}.bak"
+    fi
+
+    if [ -e "$src" ]; then
+        ln -sf "$src" "$dest"
+        echo "--> Linked $src to $dest"
+    else
+        echo "!! WARNING: Source file/directory not found: $src"
+    fi
+}
+
+# --- A. Link Core Hidden Files ---
+safe_symlink "$DOTFILES/configs/.bashrc" "$HOME/.bashrc"
+safe_symlink "$DOTFILES/configs/.vimrc" "$HOME/.vimrc"
+safe_symlink "$DOTFILES/configs/.xinitrc" "$HOME/.xinitrc"
+
+# --- B. Link .config Directory ---
+# This links the entire internal .config folder to $HOME/.config
+# Note: This assumes you handle conflicts within $DOTFILES/configs/.config
+safe_symlink "$DOTFILES/configs/.config/" "$HOME/.config/"
 
 # -----------------------------------------------------------
 # 6. Enable and Start LightDM Service (Guarantee)
