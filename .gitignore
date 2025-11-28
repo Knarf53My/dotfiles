@@ -31,3 +31,7 @@ configs/.vim/undo/
 
 # Also ignore common temporary files
 *.bak
+
+# Local user configurations
+.config/btop/
+.config/mc/
