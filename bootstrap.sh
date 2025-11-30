@@ -43,7 +43,7 @@ if [ "$UPDATE_MODE" -eq 0 ]; then
     
     # CRITICAL: Build essentials and all X libs (Fixes DWM crashing)
     # Packages consolidated for robust installation.
-    sudo apt install -y build-essential libx11-dev libxft-dev libxinerama-dev libfreetype6-dev libfontconfig1-dev pkg-config maim xclip feh alacritty firefox-esr lightdm lightdm-gtk-greeter xorg xinit x11-xserver-utils ncurses-base ncurses-term vim dmenu pulseaudio pulseaudio-utils alsa-utils brightnessctl network-manager network-manager-gnome dbus-x11 dialog firmware-atheros
+    sudo apt install -y build-essential libx11-dev libxft-dev libxinerama-dev libfreetype6-dev libfontconfig1-dev pkg-config maim xclip feh alacritty firefox-esr lightdm lightdm-gtk-greeter xorg xinit x11-xserver-utils ncurses-base ncurses-term vim dmenu pulseaudio pulseaudio-utils alsa-utils brightnessctl network-manager network-manager-gnome dbus-x11 dialog firmware-atheros bat
     #                                                                                                                                                                                                                                           ^^^^^ ADDED VIM HERE
 
 else
