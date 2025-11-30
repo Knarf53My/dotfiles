@@ -16,3 +16,4 @@ set smarttab                  " Smart tabs
 
 " Optional: Use a simple native colorscheme if you want more than black/white
 " colorscheme desert
+" colorscheme Nord
