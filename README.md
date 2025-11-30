@@ -2,7 +2,7 @@
 
 Dotfiles to set up a full working DWM window manager environment.
 
-Clean, minimal, fast — with dwm, st, slstatus, themes, scripts, aliases,
+Clean, minimal, fast — with dwm, slstatus, themes, scripts, aliases,
 and a complete bootstrap system.
 
 # Installation (simple + recommended)
@@ -22,9 +22,10 @@ Run the bootstrap script:
 This script will:
 
 -   install required packages
--   build dwm, st, slstatus
+-   build dwm and slstatus
 -   create the needed symlinks
 -   install themes, aliases, scripts, and wallpapers
+-   install login manager
 -   configure fonts and terminal
 -   prepare your environment for use
 
@@ -48,7 +49,7 @@ This will rebuild the suckless programs and refresh symlinks.
 # Components
 
 -   dwm (window manager)
--   st (terminal emulator)
+-   Alacritty (terminal emulator)
 -   slstatus (status bar)
 -   vim setup
 -   aliases for system and dev usage
