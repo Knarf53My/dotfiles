@@ -1,11 +1,11 @@
-🌙 dwm-setup
+# Debian 13 Trixie with DWM window manager.
 
 Dotfiles to set up a full working DWM window manager environment.
 
 Clean, minimal, fast — with dwm, st, slstatus, themes, scripts, aliases,
 and a complete bootstrap system.
 
-📦 Installation (simple + recommended)
+# Installation (simple + recommended)
 
 Clone this repository into ~/.dotfiles:
 
@@ -35,7 +35,7 @@ When finished, restart X:
 
 (Or simply log out and back in.)
 
-🔄 Updating
+# Updating
 
 To sync updates from the repository:
 
@@ -45,7 +45,7 @@ To sync updates from the repository:
 
 This will rebuild the suckless programs and refresh symlinks.
 
-🧩 Components
+# Components
 
 -   dwm (window manager)
 -   st (terminal emulator)
@@ -55,7 +55,7 @@ This will rebuild the suckless programs and refresh symlinks.
 -   themes (Gruvbox, Nord, Nord Dark)
 -   rebuild scripts for fast recompiling
 
-🏗 Philosophy
+# Philosophy
 
 This setup follows the classic suckless workflow:
 
@@ -65,3 +65,4 @@ This setup follows the classic suckless workflow:
 -   rebuild scripts for development
 -   everything portable in .dotfiles
 
+# Scripts used:
